@@ -7,10 +7,10 @@ const fs = require('fs')
 const axios = require("axios")
 
 const thingys = {
-    consumer_key:         process.env.cons_key,
-   consumer_secret:      process.env.cons_sec,
-   access_token:         process.env.acc_token,
-   access_token_secret:  process.env.acc_token_sec,
+  consumer_key:         process.env.cons_key,
+  consumer_secret:      process.env.cons_sec,
+  access_token:         process.env.acc_token,
+  access_token_secret:  process.env.acc_token_sec,
    timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
    strictSSL:            true,     // optional - requires SSL certificates to be valid. 
  }
@@ -67,6 +67,7 @@ function getPatchNotes() {
 
 function newTeaser(day) {
     T.get('statuses/user_timeline',{screen_name: "FortniteGame",count:50,tweet_mode:"extended"},function(err,tweet,resp) {
+    console.log(tweet)
     tweet.forEach(async tw => {
         if(tw.entities.media && tw.full_text.includes("#FortniteSeason9") && tw.created_at.includes(day))
         {
@@ -107,4 +108,4 @@ Client.on("guildMemberAdd",function(member) {
 
 
 
-Client.login(process.env.TOKEN);
+Client.login("NTc1MDQ1NzMyMDU5NTc4Mzgw.XNHdvA.Y7UsHSuUC58qYFv6dItjiY_P4Y4");
