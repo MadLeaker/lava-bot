@@ -43,6 +43,7 @@ function getPatchNotes(interval) {
     channel.fetchMessages({ limit: 1 })
   .then(messages => {
       messages.forEach(msg => {
+        getVideos();
           if(!msg.content.includes("Season 9 is out!")) {
             console.log("No season 9 in discord!");
             request("https://www.epicgames.com/fortnite/en-US/patch-notes/v9-00",function(err,response,body) {
@@ -53,7 +54,7 @@ function getPatchNotes(interval) {
                 else {
                     console.log("There's season 9 patch notes!")
                     channel.send("Season 9 is out! Patch notes: https://www.epicgames.com/fortnite/en-US/patch-notes/v9-00 @everyone")
-                    getVideos();
+                    
                 }
             })
           }
@@ -74,7 +75,14 @@ function getVideos() {
         const $ = await cheerio.load(body);
         const test = $("iframe");
         test.each((index,elem) => {
-            channel.send(elem.attribs.src+" @everyone");
+            channel.fetchMessages().then(messages => {
+              messages.forEach(msg => {
+                if(!msg.content.includes(elem.attribs.src)) {
+                  channel.send(elem.attribs.src+" @everyone");
+                }
+              })
+            })
+            
         })
       }
       
