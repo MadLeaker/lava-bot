@@ -43,4 +43,4 @@ Client.on("guildMemberAdd",function(member) {
 
 
 
-Client.login("NTc1MDQ1NzMyMDU5NTc4Mzgw.XNHdvA.Y7UsHSuUC58qYFv6dItjiY_P4Y4")
+Client.login(process.env.TOKEN);
