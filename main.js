@@ -65,7 +65,7 @@ function getPatchNotes() {
 }
 
 
-function newTeaser(day) {
+function newTeaser(day,interval) {
     T.get('statuses/user_timeline',{screen_name: "FortniteGame",count:50,tweet_mode:"extended"},function(err,tweet,resp) {
     tweet.forEach(async tw => {
         console.log(tw.full_text);
@@ -80,6 +80,9 @@ function newTeaser(day) {
                         channel.send("3rd Teaser Is Out!",{files: [
                             "./Teaser3.png"
                         ]})
+                    }
+                    else {
+                      clearInterval(interval)
                     }   
               })
           })
@@ -98,7 +101,7 @@ function newTeaser(day) {
 Client.once("ready",() => {
 
     setInterval(getPatchNotes,1000);
-    setInterval(function() {newTeaser("Wed")},1000)
+    var interval = setInterval(function() {newTeaser("Wed",interval)},1000)
 })
 
 Client.on("guildMemberAdd",function(member) {
