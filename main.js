@@ -38,7 +38,8 @@ Client.once("ready",() => {
 })
 
 Client.on("guildMemberAdd",function(member) {
-    member.addRole("Lava Legends")
+    let legendRole = member.guild.roles.find("name","Lava Legends")
+    member.addRole(legendRole);
 })
 
 
