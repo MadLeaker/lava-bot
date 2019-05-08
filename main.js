@@ -67,8 +67,8 @@ function getPatchNotes() {
 
 function newTeaser(day) {
     T.get('statuses/user_timeline',{screen_name: "FortniteGame",count:50,tweet_mode:"extended"},function(err,tweet,resp) {
-    console.log(tweet)
     tweet.forEach(async tw => {
+        console.log(tw.full_text);
         if(tw.entities.media && tw.full_text.includes("#FortniteSeason9") && tw.created_at.includes(day))
         {
             console.log("New Teaser Available");
