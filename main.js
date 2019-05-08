@@ -53,6 +53,7 @@ function getPatchNotes(interval) {
                 else {
                     console.log("There's season 9 patch notes!")
                     channel.send("Season 9 is out! Patch notes: https://www.epicgames.com/fortnite/en-US/patch-notes/v9-00 @everyone")
+                    getVideos();
                 }
             })
           }
@@ -66,42 +67,26 @@ function getPatchNotes(interval) {
 }
 
 
-function newTeaser(day,interval) {
-    T.get('statuses/user_timeline',{screen_name: "FortniteGame",count:50,tweet_mode:"extended"},function(err,tweet,resp) {
-    tweet.forEach(async tw => {
-              if(tw.entities.media && tw.full_text.includes("#FortniteSeason9") && tw.created_at.includes(day))
-        {
-            console.log("New Teaser Available");
-          await downloadFile(tw.entities.media[0].media_url_https,"Teaser3.png");
-          const channel = Client.channels.get("574297690943520789")
-          channel.fetchMessages({limit: 1}).then(messages => {
-              messages.forEach(msg => {
-                    if(!msg.content.includes("3rd Teaser")) {
-                        channel.send("3rd Teaser Is Out!",{files: [
-                            "./Teaser3.png"
-                        ]})
-                    }
-                    else {
-                      clearInterval(interval)
-                    }   
-              })
-          })
-          
-        }
-        else {
-            console.log("No New Teaser!");
-        }
-        
-    })
-  }) 
-  }
+function getVideos() {
+  request("https://www.epicgames.com/fortnite/en-US/news/season-9",async function(err,response,body) {
+    const channel = Client.channels.get("574297690943520789")
+      if(!response.request.href.includes("not-found")) {
+        const $ = await cheerio.load(body);
+        const test = $("iframe");
+        test.each((index,elem) => {
+            channel.send(elem.attribs.src);
+        })
+      }
+      
+  })
+}
 
 
 
 Client.once("ready",() => {
 
     var int = setInterval(function() {getPatchNotes(int)},1000);
-    var interval = setInterval(function() {newTeaser("Wed",interval)},1000)
+    
 })
 
 Client.on("guildMemberAdd",function(member) {
