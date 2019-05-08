@@ -70,6 +70,7 @@ function newTeaser(day) {
     tweet.forEach(async tw => {
         if(tw.entities.media && tw.full_text.includes("#FortniteSeason9") && tw.created_at.includes(day))
         {
+            console.log("New Teaser Available");
           await downloadFile(tw.entities.media[0].media_url_https,"Teaser3.png");
           const channel = Client.channels.get("574297690943520789")
           channel.fetchMessages({limit: 1}).then(messages => {
@@ -81,6 +82,10 @@ function newTeaser(day) {
                     }   
               })
           })
+          
+        }
+        else {
+            console.log("No New Teaser!");
         }
         
     })
