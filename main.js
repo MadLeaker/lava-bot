@@ -74,7 +74,7 @@ function getVideos() {
         const $ = await cheerio.load(body);
         const test = $("iframe");
         test.each((index,elem) => {
-            channel.send(elem.attribs.src);
+            channel.send(elem.attribs.src+" @everyone");
         })
       }
       
