@@ -38,7 +38,7 @@ const thingys = {
 
 
 
-function getPatchNotes() {
+function getPatchNotes(interval) {
     const channel = Client.channels.get("574297690943520789")
     channel.fetchMessages({ limit: 1 })
   .then(messages => {
@@ -58,6 +58,7 @@ function getPatchNotes() {
           }
           else {
               console.log("There's season 9 patchnotes in discord!")
+              clearInterval(interval)
           }
       });
   })
@@ -99,7 +100,7 @@ function newTeaser(day,interval) {
 
 Client.once("ready",() => {
 
-    setInterval(getPatchNotes,1000);
+    var int = setInterval(function() {getPatchNotes(int)},1000);
     var interval = setInterval(function() {newTeaser("Wed",interval)},1000)
 })
 
