@@ -37,10 +37,10 @@ const thingys = {
 
 
 async function getName() {
-  T.get("verify_credentials",function(err,res,msg) {
+  T.get("verify_credentials",function(err,res) {
       return new Promise((resolve,reject) => {
-          if(msg.screen_name) {
-            resolve(msg.screen_name)
+          if(res.screen_name) {
+            resolve(res.screen_name)
           }
       }) 
   })
