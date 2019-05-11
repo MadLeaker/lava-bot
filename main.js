@@ -36,64 +36,28 @@ const thingys = {
   }
 
 
-
-
-function getPatchNotes(interval) {
-    const channel = Client.channels.get("574297690943520789")
-    channel.fetchMessages({ limit: 1 })
-  .then(messages => {
-      messages.forEach(msg => {
-        getVideos();
-          if(!msg.content.includes("Season 9 is out!")) {
-            console.log("No season 9 in discord!");
-            request("https://www.epicgames.com/fortnite/en-US/patch-notes/v9-00",function(err,response,body) {
-                console.log(response.request.href)
-                if(response.request.href.includes("not-found")) {
-                    console.log("No season 9 patch notes!");
-                }
-                else {
-                    console.log("There's season 9 patch notes!")
-                    channel.send("Season 9 is out! Patch notes: https://www.epicgames.com/fortnite/en-US/patch-notes/v9-00 @everyone")
-                    
-                }
-            })
+async function getName() {
+  T.get("verify_credentials",function(err,res,msg) {
+      return new Promise((resolve,reject) => {
+          if(msg.screen_name) {
+            resolve(msg.screen_name)
           }
-          else {
-              console.log("There's season 9 patchnotes in discord!")
-              clearInterval(interval)
-          }
-      });
-  })
-  .catch(console.error);
-}
-
-
-function getVideos() {
-  request("https://www.epicgames.com/fortnite/en-US/news/season-9",async function(err,response,body) {
-    const channel = Client.channels.get("574297690943520789")
-      if(!response.request.href.includes("not-found")) {
-        const $ = await cheerio.load(body);
-        const test = $("iframe");
-        test.each((index,elem) => {
-            channel.fetchMessages().then(messages => {
-              messages.forEach(msg => {
-                if(!msg.content.includes(elem.attribs.src)) {
-                  channel.send(elem.attribs.src+" @everyone");
-                }
-              })
-            })
-            
-        })
-      }
-      
+      }) 
   })
 }
 
 
+
+
+function getTweets() {
+  getName().then(name => {
+      const channel = Client.channels.get(576848959990136844);
+      channel.send(name);
+  })
+}
 
 Client.once("ready",() => {
-
-    var int = setInterval(function() {getPatchNotes(int)},1000);
+   getTweets();
     
 })
 
