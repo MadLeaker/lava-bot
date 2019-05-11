@@ -51,7 +51,7 @@ async function getName() {
 
 function getTweets() {
   getName().then(name => {
-      const channel = Client.channels.get(576848959990136844);
+      const channel = Client.channels.get("576848959990136844");
       channel.send(name);
   })
 }
